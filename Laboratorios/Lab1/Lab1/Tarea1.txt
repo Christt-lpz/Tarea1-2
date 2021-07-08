@@ -1,0 +1,223 @@
+
+
+```{r}
+library(plyr)
+library(dplyr)
+library(ggplot2)
+
+```
+
+
+1. ¿Cómo generaría un arreglo aleatorio de 250 elementos con los colores primarios?
+```{r}
+
+colores<-rep(c('Rojo','Amarillo','Azul'), c(83,83,84))
+arrColores <-array(colores)
+arrColores
+
+```
+
+2 .Dado un arreglo de 120000 elementos de números enteros entre
+40 y 70, ¿Cómo haría para obtener la desviación estándar de
+aquellos números que son mayores a 55 y menores a 64?
+
+```{r}
+
+arreglo<-  array(sample(40:70,120000, replace = TRUE))
+arreg =as.data.frame(arreglo)
+colnames(arreg)<-'Valor'
+
+class(arreg)
+
+V<-filter( arreg, Valor>55 & Valor<64)
+
+sd(V$Valor)
+
+
+```
+
+3. Suponga que se almacena en una variable un arreglo con todos
+los números de carnet de los estudiantes del Instituto de
+Investigación de Operaciones de la universidad en forma de
+string, los carnets tiene al inicio dos caracteres que
+identifican el año en el que la persona entró a la universidad
+por ejemplo: 19004528 hacer referencia a una persona que
+ingreso en el año 2019, 06009878 hace referencia a una persona
+que ingreso que el año 2006, ¿Cómo haría para contar la cantidad
+de alumnos por año?
+```{r}
+
+# SE CREA 10000 carnet  desde el año  2010  al  2021
+carne <- as.factor(sample(1000000:2199999, 10000, replace=FALSE))
+
+
+ncarne<-as.data.frame(carne)
+
+colnames(ncarne)<-'numero'
+
+ncarne$anio = paste('20',substr(ncarne$numero,1,2))
+
+ncarne
+
+AgrupacionAnio<-ncarne %>% 
+  group_by(anio)%>% dplyr::summarise (total=n())
+
+AgrupacionAnio
+ 
+
+```
+
+4.Define el vector y = (1, 3, 5, 7) utilizando la función c().
+¿Cómo lo harías con la función seq()?
+
+```{r}
+
+Y= c(1,3,5,7)
+
+Y
+Y2= seq(1,8,by=2)
+Y2
+
+```
+
+
+6. Dado los siguientes vectores, muestre el código en R necesario
+para declarar y calcular el promedio, deviación estándar,
+mediana, moda y sumatoria total para los siguientes vectores:
+a. x = (8, 7, 6, 5)
+b. y = (3, 3, 3, 3, 3, 3, 3, 3, 2, 2) c. z = (1, 1.75, 2.5,
+3.25, 4)
+
+
+```{r}
+
+x= c(8,7,5)
+y = c(3, 3, 3, 3, 3, 3, 3, 3, 2, 2)
+z = c(1, 1.75, 2.5,3.25, 4)
+
+funcion<-function(arreglo)
+{
+  pro= round((mean(arreglo)),2)
+  print(paste("Promedio:", pro))
+  
+  desv= round((sd(arreglo)),2)
+  print(paste("desviacion Estandar:", desv))
+  
+  med=median(arreglo)
+  print(paste("Mediana:", med))
+  
+  moda=mode(arreglo)
+  print(paste("Moda:", moda))
+  
+  sumatoria=sum(arreglo)
+  print(paste("Sumatoria:", sumatoria))
+  
+  print("-----------------")
+  
+  
+}
+
+funcion(x)
+funcion(y)
+funcion(z)
+
+
+
+```
+
+7. Sabemos que para sumar vectores estos deben tener la misma
+longitud. Sin embargo R trabaja de manera distinta. Defina los
+vectores x = (1, 2, 3, 4, 5, 6), y = (7, 8), z = (9, 10, 11,
+12). Calcula:
+a. x + x
+b. x + y.
+c. Responda ¿Qué ha hecho R?
+
+A- Realiza la suma normal de 2 vectores,  es decir  suma el valor de cada columna
+B- realiza la sumana de las primeras dos columnas, luego al validar que el vector Y no 
+   tiene mas  columas considera las 2 columnas existentes para continuar con la suma de los proximos valoresy    asi hasta finalizar, considera que si X tubiera 5 columnas y Y 2 la suma no seria posible ya que no es       multiplo 
+   
+
+```{r}
+
+X<-c(1, 2, 3, 4, 5, 6)
+Y <-c(7, 8)
+Z = c(9, 10, 11,12)
+
+#calculo de A
+W<-X+X
+W
+
+#Calculo de B
+V<-X+Y
+V
+
+```
+8. Dada la variable string <- "Hola Mundo", escriba una instrucción
+en R que devuelva la siguiente salida:
+[[1]]
+[1] "Hola"
+[[2]]
+[1] "Mundo"
+
+```{r}
+texto<-"Hola mundo"
+lista <- list(substr(texto, 1,4), substr(texto,6,10) )
+lista
+```
+
+
+Ejercicio  2
+
+```{r}
+#lismpienza del entrono 
+rm(list = ls())
+
+```
+1. ¿Qué tipo de dato es info_estudiantes?
+----------Lista (de listas)
+
+2. ¿Cuantos elementos tiene info_estudiantes? summary(info_estudiantes)
+----------3 elementos con una longitud de  8000 registros
+
+3. ¿Qué representa cada uno de los elementos de info_estudiantes?
+----------El carnet, promedio y tipo, general informacion de las notas de los estudiantes 
+
+
+4. ¿Cuál es la media de los estudiantes ingresados en el año 2019?
+              (df2<-df %>%filter(substr(carne,1,2)=="19")
+              (mean(df2$promedio))
+
+----------la media es: 70.85942
+
+
+5. ¿Cuál es la suma de desviación estándar de los estudiantes que
+ingresaron en el año 2016 y 2018?
+                  (df3<-df %>%filter(substr(carne,1,2) %in% c("16","18")))
+                  (sd(df3$promedio))
+----------La desbiacion estandar para el año  2016 y 2018 es  de  17.57467
+
+6. ¿Cuál es el mínimo de notas de aquellos estShow in New WindowClear OutputExpand/Collapse Output
+                  (df4<-df %>%filter(substr(carne,7,8) %in% c("45","46","47","48"))
+                  (min(df4$promedio))
+----------El promedio minimo es de  40
+
+
+7. ¿Cuál es la probabilidad de que un estudiante tipo A tenga una
+nota mayor a 85?        
+                        (df12<-df11 %>% filter(Promedio>85))
+                        (Total<-count(df11$tipo))  
+                        (Total2<-count(df12$tipo))
+                        (Total2/Total)
+   
+----------La probabilidad es  0.2461
+
+
+8. ¿Cuál es la probabilidad de que un estudiante tipo C haya
+ingresado en el año 2017 o 2019?
+                  (df13<-df %>% filter(tipo=="C"))
+                  (TotalC<-count(df13$tipo))
+                  (df14<- df13 %>% filter(substr(Carne,1,2) %in% c("17","19")))
+                  (TotalAnio<-count(df14$tipo))
+                  (TotalAnio/TotalC)
+----------La probabilidad es 0.4972
